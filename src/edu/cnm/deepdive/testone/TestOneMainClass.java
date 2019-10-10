@@ -2,6 +2,7 @@ package edu.cnm.deepdive.testone;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,17 +51,54 @@ public class TestOneMainClass {
   }
 
   public static float[] clockAngles(int hours, float minutes){
-
     hours %= 12;
     minutes /= 60;
-    minutes *= 360;
-    float hourHand = hours /12F;
-
-    return new float[]{minutes, hourHand*360};
-
-
+    return new float[]{minutes * 360, (hours/12F + 1/12F*minutes) * 360};
   }
 
+  public static String reverseStringOne(String str){
+    StringBuilder sb = new StringBuilder();
+    for (int i = str.toCharArray().length - 1; i >= 0; i--) {
+        sb.append(str.toCharArray()[i]);
+    }
+    return sb.toString();
+  }
+
+  public static String reverseStringTwo(String str){
+    StringBuilder sb = new StringBuilder();
+    str.chars().mapToObj(c->(char)c).collect(Collectors.toCollection(LinkedList::new)).descendingIterator().forEachRemaining(
+        sb::append);
+    return sb.toString();
+  }
+
+  public static int[] leaderBoardRanking(int[] leaderBoard, int[] playerScores){
+
+    int[] rankings = new int[playerScores.length];
+    int i = 0;
+
+    // up or down
+//    for (int playerScore : playerScores) {
+//      int above = 0;
+//      while(playerScore >= leaderBoard[leaderBoard.length-above-1]){
+//        above++;
+//      }
+//      rankings[i++] = leaderBoard.length-above+1;
+//    }
+
+    for (int playerScore : playerScores) {
+      int position = 0;
+      for (int leaderBoardScore : leaderBoard) {
+        if(playerScore >= leaderBoardScore){
+          break;
+        }
+        position++;
+      }
+      rankings[i++] = position+1;
+    }
+
+    return rankings;
+
+  }
 
 
 
@@ -68,13 +106,16 @@ public class TestOneMainClass {
 //    for (String s : ladderBuilder(10)) {
 //      System.out.println(s);
 //    }
-    ladderBuilder(10);
-    System.out.println(Arrays.toString(clockAngles(1, 30)));
-
+//    ladderBuilder(10);
+//    System.out.println(Arrays.toString(clockAngles(1, 0)));
+//    System.out.println(reverseString("Hello World"));
 //    System.out.println(ladderBuilder(10));
 //    String x = new String(new char[1000]).replace("\0","l");
 //    System.out.println(x);
-
+    System.out
+        .println(Arrays
+            .toString(leaderBoardRanking(new int[]{100, 90, 85, 70}, new int[]{5, 60, 80, 85, 95})));
+    System.out.println(reverseStringTwo("Hello World"));
   }
 
 
